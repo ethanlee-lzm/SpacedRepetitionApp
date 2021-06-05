@@ -8,11 +8,11 @@ export default class TodoList {
       this.projects.push(project);
     }
   
-    removeProject(projectName) {
-      const projectToDelete = this.projects.find(
+    deleteProject(projectName) {
+      const project = this.projects.find(
         (project) => project.name === projectName
       );
-      this.projects.splice(this.projects.indexOf(projectToDelete), 1);
+      this.projects.splice(this.projects.indexOf(project), 1);
     }
   
     getProject(projectName) {
