@@ -1,9 +1,7 @@
-// factory
-
-class Task {
-    constructor(name, dueDate = "No date") {
+export default class Project {
+    constructor(name) {
       this.name = name;
-      this.dueDate = dueDate;
+      this.tasks = [];
     }
   
     setName(name) {
@@ -14,13 +12,18 @@ class Task {
       return this.name;
     }
   
-    setDate(dueDate) {
-      this.dueDate = dueDate;
+    addTask(task) {
+      this.tasks.push(task);
     }
   
-    getDate() {
-      return this.dueDate;
+    removeTask(taskName) {
+      const taskToRemove = this.tasks.find((task) => task.name === taskName);
+      this.tasks.splice(this.tasks.indexOf(taskToRemove), 1);
+    }
+  
+    getTasks() {
+      return this.tasks;
     }
   }
   
-  export default Task;
+  // factory implementation
