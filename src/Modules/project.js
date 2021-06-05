@@ -17,13 +17,15 @@ export default class Project {
     }
   
     removeTask(taskName) {
-      const taskToRemove = this.tasks.find((task) => task.name === taskName);
-      this.tasks.splice(this.tasks.indexOf(taskToRemove), 1);
+      const task = this.tasks.find((task) => task.name === taskName);
+      this.tasks.splice(this.tasks.indexOf(task), 1);
+    }
+  
+    getTask(taskName) {
+      return this.tasks.find((task) => (task.name = taskName));
     }
   
     getTasks() {
       return this.tasks;
     }
   }
-  
-  // factory implementation
