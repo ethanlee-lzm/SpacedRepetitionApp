@@ -214,8 +214,7 @@ export default class UI {
   }
 
   static openWeekTasks() {
-    //remove add task
-    //sort this week in project class
+    Storage.updateWeekProject();
     UI.openProject("This week", this);
   }
 
@@ -436,7 +435,9 @@ export default class UI {
 
     if (projectName === "Today" || projectName === "This week") {
       const mainProjectName = taskName.split("(")[1].split(")")[0];
-      const mainTaskName = taskName.split(" ")[0];
+      const mainTaskName = taskName.split(" (")[0];
+      console.log(mainProjectName);
+      console.log(mainTaskName);
       Storage.setTaskDate(projectName, taskName, newDueDate);
       Storage.setTaskDate(mainProjectName, mainTaskName, newDueDate);
     } else {
