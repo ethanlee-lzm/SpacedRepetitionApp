@@ -1,27 +1,23 @@
-import Storage from "./Storage.js";
+import Storage from "./Storage";
+import TodoList from "./TodoList";
+import Project from "./Project";
+import Task from "./Task";
 
 export default class UI {
   static load() {
-    UI.renderContent();
-    UI.initRenderedButtons();
-    UI.initDefaultButtons();
-    UI.openInboxProjects();
+    UI.loadProjects();
+    UI.initProjectButtons();
   }
 
-  static renderContent() {
+  static loadProjects() {
     Storage.getTodoList()
       .getProjects()
       .forEach((project) => this.createProject(project.name));
   }
 
-  static initRenderedButtons() {
-    const projectButtons = document.querySelectorAll("[data-project-button]");
-    projectButtons.forEach((projectButton) =>
-      projectButton.addEventListener("click", UI.handleProjectButton)
-    );
-  }
+  // PROJECT BUTTONS
 
-  static initDefaultButtons() {
+  static initProjectButtons() {
     const inboxProjectsButton = document.getElementById(
       "button-inbox-projects"
     );
@@ -36,34 +32,27 @@ export default class UI {
     const cancelProjectPopupButton = document.getElementById(
       "button-cancel-project-popup"
     );
-    const addTaskButton = document.getElementById("button-add-task");
-    const addTaskPopupButton = document.getElementById("button-add-task-popup");
-    const cancelTaskPopupButton = document.getElementById(
-      "button-cancel-task-popup"
-    );
+    const projectButtons = document.querySelectorAll("[data-project-button]");
 
-    inboxProjectsButton.addEventListener("click", UI.openInboxProjects);
-    todayProjectsButton.addEventListener("click", UI.openTodayProjects);
-    weekProjectsButton.addEventListener("click", UI.openWeekProjects);
+    inboxProjectsButton.addEventListener("click", UI.openInboxTasks);
+    todayProjectsButton.addEventListener("click", UI.openTodayTasks);
+    weekProjectsButton.addEventListener("click", UI.openWeekTasks);
     addProjectButton.addEventListener("click", UI.openAddProjectPopup);
     addProjectPopupButton.addEventListener("click", UI.addProject);
     cancelProjectPopupButton.addEventListener("click", UI.closeAddProjectPopup);
-    addTaskButton.addEventListener("click", UI.openAddTaskPopup);
-    addTaskPopupButton.addEventListener("click", UI.addTask);
-    cancelTaskPopupButton.addEventListener("click", UI.closeAddTaskPopup);
+    projectButtons.forEach((projectButton) =>
+      projectButton.addEventListener("click", UI.handleProjectButton)
+    );
   }
 
-  // Default project button handlers
-
-  static openInboxProjects() {
+  static openInboxTasks() {
     //setup event listeners
+    //store in localStorage as Inbox
   }
 
-  static openTodayProjects() {}
+  static openTodayTasks() {}
 
-  static openWeekProjects() {}
-
-  // Add project button handlers
+  static openWeekTasks() {}
 
   static openAddProjectPopup() {
     const projectPopup = document.getElementById("add-project-popup");
@@ -84,7 +73,12 @@ export default class UI {
 
   static addProject() {
     const projectInput = document.getElementById("input-add-project-popup");
-    if (projectInput.value !== "") UI.createProject(projectInput.value);
+    const projectName = projectInput.value;
+
+    if (projectName !== "" && !Storage.getTodoList().contains(projectName)) {
+      UI.createProject(projectName);
+      Storage.addProject(new Project(projectName));
+    }
     UI.closeAddProjectPopup();
   }
 
@@ -100,10 +94,80 @@ export default class UI {
           <i class="fas fa-times"></i>
         </div>
       </button>`;
-    UI.initRenderedButtons();
+    UI.initProjectButtons();
   }
 
-  // Add task button handlers
+  static handleProjectButton(e) {
+    const projectName = this.children[0].children[1].textContent;
+    if (e.target.classList.contains("fas")) {
+      UI.deleteProject(projectName);
+      return;
+    }
+    UI.openProject(projectName);
+  }
+
+  static openProject(projectName) {
+    const projectPreview = document.getElementById("project-preview");
+    projectPreview.innerHTML = `
+    <h1>${projectName}</h1>
+      <div class="tasks-list" id="tasks-list"></div>
+      <button class="button-add-task" id="button-add-task">
+        <i class="fas fa-plus"></i>
+        Add Task
+      </button>
+      <div class="add-task-popup" id="add-task-popup">
+        <input
+          class="input-add-task-popup"
+          id="input-add-task-popup"
+          type="text"
+        />
+        <div class="add-task-popup-buttons">
+          <button class="button-add-task-popup" id="button-add-task-popup">
+            Add
+          </button>
+          <button
+            class="button-cancel-task-popup"
+            id="button-cancel-task-popup"
+          >
+            Cancel
+          </button>
+        </div>
+      </div>`;
+    UI.renderTasks(projectName);
+    UI.initAddTaskButtons();
+  }
+
+  static deleteProject(projectName) {
+    Storage.deleteProject(projectName);
+    UI.loadProjects();
+    UI.clear();
+  }
+
+  static clear() {
+    const userProjects = document.getElementById("user-projects");
+    userProjects.textContent = "";
+
+    const projectPreview = document.getElementById("project-preview");
+    projectPreview.textContent = "";
+  }
+
+  // TASK BUTTONS
+
+  static initAddTaskButtons() {
+    const addTaskButton = document.getElementById("button-add-task");
+    const addTaskPopupButton = document.getElementById("button-add-task-popup");
+    const cancelTaskPopupButton = document.getElementById(
+      "button-cancel-task-popup"
+    );
+    const taskButtons = document.querySelectorAll("[data-task-button]");
+
+    addTaskButton.addEventListener("click", UI.openAddTaskPopup);
+    addTaskPopupButton.addEventListener("click", UI.addTask);
+    cancelTaskPopupButton.addEventListener("click", UI.closeAddTaskPopup);
+    taskButtons.forEach((taskButton) =>
+      taskButton.addEventListener("click", UI.handleTaskButton)
+    );
+  }
 
   static openAddTaskPopup() {
     const addTaskPopup = document.getElementById("add-task-popup");
@@ -124,8 +188,18 @@ export default class UI {
 
   static addTask() {
     const addTaskPopupInput = document.getElementById("input-add-task-popup");
-    if (addTaskPopupInput.value !== "")
-      UI.createTask(addTaskPopupInput.value, "No date");
+    const taskName = addTaskPopupInput.value;
+
+    const projectPreview = document.getElementById("project-preview");
+    const projectName = projectPreview.children[0].textContent;
+
+    if (
+      taskName !== "" &&
+      !Storage.getTodoList().getProject(projectName).contains(taskName)
+    ) {
+      UI.createTask(taskName, "No date");
+      Storage.addTask(projectName, new Task(taskName));
+    }
     UI.closeAddTaskPopup();
   }
 
@@ -144,27 +218,9 @@ export default class UI {
       </button>`;
   }
 
-  // Project button handlers
-
-  static handleProjectButton(e) {
-    const projectName = this.children[0].children[1].textContent;
-    if (e.target.classList.contains("fas")) {
-      UI.deleteProject(projectName);
-      return;
-    }
-    UI.openProject(projectName);
-  }
-
-  static openProject(project) {
-    console.log(project + " open");
-    //open project from memory by name
-  }
-
-  static deleteProject(project) {
-    console.log(project + " delete");
-    //delete from memory
-    //render project from memory
-    //open inbox project
+  static renderTasks(projectName) {
+    const tasks = Storage.getTodoList().getProject(projectName).getTasks();
+    tasks.forEach((task) => UI.createTask(task.name, task.dueDate));
   }
 
   // Tasks button handlers
