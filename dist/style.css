@@ -19,6 +19,10 @@
   html {
     font-size: 62.5%;
     line-height: 1.6;
+  
+    /* footer support */
+    position: relative; /* makes html an element which footer sticks to */
+    min-height: 100%; /* not necessary when main takes all available space */
   }
   
   body {
@@ -34,13 +38,18 @@
   
   button {
     display: block;
+    padding: 1rem;
+    border: none;
+    border-radius: 5px;
     color: inherit;
     font-family: inherit;
     font-size: inherit;
-    border: none;
-    outline: none;
     cursor: pointer;
-    padding: 1rem;
+    outline: none;
+  }
+  
+  i {
+    margin-right: 1rem;
   }
   
   /* Header */
@@ -65,43 +74,71 @@
   }
   
   .page-name {
-    margin-left: 1rem;
     font-family: "Yusei Magic", sans-serif;
+    font-size: 4rem;
   }
   
-  .user-panel {
+  .button-options {
+    padding: 0;
+    background-color: var(--primary-dark);
+    font-size: 4rem;
+  }
+  
+  .button-options:hover {
+    color: #ccc;
+  }
+  
+  .fa-bars {
+    margin-right: 0;
+  }
+  
+  .options-panel {
+    display: none;
+    position: absolute;
+    top: 7rem;
+    right: 2rem;
+    padding: 2rem;
+    border: 1px solid #aaa;
+    border-radius: 5px;
+    background-color: #ddd;
+    color: #444;
+    font-size: 1.6rem;
+  }
+  
+  .options-panel.active {
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
   }
   
   .user-name {
-    margin-right: 2rem;
+    margin-bottom: 2rem;
   }
   
   .button-sign-out {
-    background-color: rgba(173, 85, 85, 1);
+    width: 100%;
+    border: 1px solid #b86060;
+    background-color: #eb9393;
   }
   
   .button-sign-out:hover {
-    background-color: rgba(173, 85, 85, 0.9);
+    background-color: #da8282;
   }
   
   /* Main */
   
   .main {
     display: flex;
+    /* min-height: calc(100vh - header_height - footer_height) */
+    min-height: calc(100vh - 10.4rem - 3.5rem);
+    margin-bottom: 3.5rem;
   }
   
   .nav {
-    padding: 1rem;
     flex: 1;
-    height: 100%;
+    padding: 2rem;
     background-color: var(--secondary-light);
-  }
-  
-  .nav {
-    width: 100%;
   }
   
   .button-nav {
@@ -114,33 +151,35 @@
     background-color: #ccc;
   }
   
-  .default-project {
-    padding: 1rem;
-  }
-  
   .user-projects h1 {
     padding: 1rem;
+    margin-top: 1rem;
   }
   
   .project-preview {
-    flex: 3;
-    margin-top: 2rem;
-    margin-left: 5rem;
+    flex: 5;
+    padding: 2rem 4rem;
   }
   
   .project-preview h1 {
     padding: 0 1rem;
+    margin-bottom: 1rem;
   }
   
-  .task {
+  .button-task {
     display: flex;
     align-items: center;
+    width: 100%;
     padding: 1rem;
+    background-color: var(--primary-light);
+  }
+  
+  .button-task:hover {
+    background-color: #ddd;
   }
   
   .fa-circle,
   .fa-check-circle {
-    margin-right: 1rem;
     font-size: 2.4rem;
   }
   
@@ -154,10 +193,42 @@
     align-items: center;
     justify-content: center;
     width: 100%;
+    padding: 0.5rem;
     background-color: var(--primary-dark);
+    color: var(--primary-light);
   }
   
   .fa-github {
     margin-left: 1rem;
-    color: black;
+    color: var(--primary-light);
+    font-size: 2rem;
   }
+  
+  .fa-github:hover {
+    color: #ccc;
+  }
+  
+  @media (max-width: 1200px) {
+    .project-preview {
+      flex: 3;
+    }
+  }
+  
+  @media (max-width: 850px) {
+    .project-preview {
+      flex: 2;
+    }
+  }
+  
+  @media (max-width: 550px) {
+    html {
+      font-size: 50%;
+    }
+  }
+  
+  @media (max-width: 450px) {
+    .project-preview {
+      flex: 1;
+    }
+  }
+  
