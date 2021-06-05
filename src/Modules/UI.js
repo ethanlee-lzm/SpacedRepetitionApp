@@ -80,22 +80,31 @@ export default class UI {
           <p class="task-content">${name}</p>
         </div>
         <div class="right-task-panel">
-          <div class="due-date">${dueDate}</div>
+          <p class="due-date" id="due-date">${dueDate}</p>
           <i class="fas fa-times"></i>
         </div>
-      </button>`;
+      </button>
+      <div class="due-date-popup" id="due-date-popup">
+        <input type="date" class="input-due-date" id="input-due-date" value="2020-11-11">
+      </div>`;
 
     UI.initTaskButtons();
   }
 
   static clear() {
     UI.clearProjects();
+    UI.clearProjectPreview();
     UI.clearTasks();
   }
 
   static clearProjects() {
     const userProjects = document.getElementById("user-projects");
     userProjects.textContent = "";
+  }
+
+  static clearProjectPreview() {
+    const projectPreview = document.getElementById("project-preview");
+    projectPreview.textContent = "";
   }
 
   static clearTasks() {
@@ -141,8 +150,8 @@ export default class UI {
     const projectName = projectInput.value;
 
     if (projectName !== "" && !Storage.getTodoList().contains(projectName)) {
-      UI.createProject(projectName);
       Storage.addProject(new Project(projectName));
+      UI.createProject(projectName);
     }
     UI.closeAddProjectPopup();
   }
@@ -187,9 +196,13 @@ export default class UI {
   }
 
   static deleteProject(projectName) {
+    const projectPreview = document.getElementById("project-preview");
+    const currentProjectName = projectPreview.children[0].textContent;
+
     Storage.deleteProject(projectName);
-    UI.clear();
+    UI.clearProjects();
     UI.loadProjects();
+    if (projectName === currentProjectName) UI.clearProjectPreview();
   }
 
   // ADD TASK EVENT LISTENERS
@@ -234,8 +247,8 @@ export default class UI {
       taskName !== "" &&
       !Storage.getTodoList().getProject(projectName).contains(taskName)
     ) {
-      UI.createTask(taskName, "No date");
       Storage.addTask(projectName, new Task(taskName));
+      UI.createTask(taskName, "No date");
     }
     UI.closeAddTaskPopup();
   }
@@ -263,7 +276,7 @@ export default class UI {
       return;
     }
     if (e.target.classList.contains("due-date")) {
-      UI.setTaskDate(projectName, taskName);
+      UI.setTaskDate(e, projectName, taskName);
       return;
     }
     if (e.target.classList.contains("fa-times")) {
@@ -281,10 +294,18 @@ export default class UI {
 
   static renameTask(projectName, taskName) {
     console.log("renameTask");
+    Storage.renameTask(projectName, taskName, "New name");
+    UI.clearTasks();
+    UI.loadTasks(projectName);
   }
 
-  static setTaskDate(projectName, taskName) {
+  static setTaskDate(e, projectName, taskName) {
     console.log("setTaskDate");
+    const dueDatePopup = e.target.parentNode.parentNode.nextElementSibling;
+    dueDatePopup.classList.toggle("active");
+    Storage.setTaskDate(projectName, taskName, "New date");
+    // UI.clearTasks();
+    // UI.loadTasks(projectName);
   }
 
   static deleteTask(projectName, taskName) {
