@@ -1,6 +1,8 @@
 :root {
-    --font: #fff;
-    --background: #fff;
+    --primary-dark: #333;
+    --secondary-dark: #444;
+    --primary-light: #eee;
+    --secondary-light: #ddd;
   }
   
   *,
@@ -9,6 +11,9 @@
     box-sizing: border-box;
     padding: 0;
     margin: 0;
+  
+    /* helpful when creating basic structure */
+    /* border: 1px solid black; */
   }
   
   html {
@@ -18,6 +23,9 @@
   
   body {
     font-size: 1.6rem;
+    font-family: "Roboto", sans-serif;
+    color: var(--primary-dark);
+    background-color: var(--primary-light);
   }
   
   header {
@@ -25,9 +33,48 @@
   }
   
   button {
-    color: inherit;
+    display: block;
+    color: var(--primary-dark);
     font-family: inherit;
-    cursor: pointer;
+    font-size: inherit;
     border: none;
     outline: none;
+    cursor: pointer;
+    padding: 1rem;
+  }
+  
+  /* Header */
+  
+  .header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 2rem;
+    background-color: var(--primary-dark);
+    color: var(--primary-light);
+  }
+  
+  .logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .fa-check-double {
+    font-size: 4rem;
+  }
+  
+  .page-name {
+    margin-left: 1rem;
+    font-family: "Yusei Magic", sans-serif;
+  }
+  
+  .user-panel {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .user-name {
+    margin-right: 2rem;
   }

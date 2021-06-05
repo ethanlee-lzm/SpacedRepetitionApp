@@ -5,10 +5,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Todo List</title>
     <link rel="stylesheet" href="style.css" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Yusei+Magic&display=swap"
+      rel="stylesheet"
+    />
+    <script
+      src="https://kit.fontawesome.com/4c536a6bd5.js"
+      crossorigin="anonymous"
+    ></script>
   </head>
   <body>
     <header class="header">
-      <h1 class="logo">Todo List</h1>
+      <div class="logo">
+        <i class="fas fa-check-double"></i>
+        <h1 class="page-name">Spaced Repetition</h1>
+      </div>
       <div class="user-panel">
         <p class="user-name">Username</p>
         <button class="button-sign-out">Sign out</button>
@@ -17,32 +29,41 @@
     <main class="main">
       <nav class="nav">
         <div class="default-projects">
-          <button class="button-project">Inbox</button>
-          <button class="button-project">Today</button>
-          <button class="button-project">This week</button>
+          <button class="button-nav">Inbox</button>
+          <button class="button-nav">Today</button>
+          <button class="button-nav">This week</button>
         </div>
         <div class="user-projects">
           <h1>Projects</h1>
-          <button class="button-project">Some project name</button>
-          <button class="button-project">User Project 1</button>
-          <button class="button-project">User Project 2</button>
+          <button class="button-nav">Project 1</button>
+          <button class="button-nav">Project 2</button>
+          <button class="button-nav">Project 3</button>
         </div>
-        <button class="button-add-project">Add Project</button>
+        <button class="button-nav">Add Project</button>
       </nav>
       <div class="project-preview">
         <h1>Inbox</h1>
         <div class="tasks-list">
-          <div class="task">Wash the dishes</div>
-          <div class="task">Vacuum</div>
-          <div class="task">Make your bed</div>
+          <div class="task">
+            <i class="far fa-circle"></i>
+            <p class="task-content">Wash the dishes</p>
+          </div>
+          <div class="task">
+            <i class="far fa-circle"></i>
+            <p class="task-content">Wash the dishes</p>
+          </div>
+          <div class="task">
+            <i class="far fa-check-circle"></i>
+            <p class="task-content">Wash the dishes</p>
+          </div>
         </div>
       </div>
     </main>
     <footer class="footer">
-      <p class="copyright">Copyright © 2021 ethanlee-lzm</p>
-      <a href="https://github.com/ethanlee-lzm" class="github-link">
-        <i class="github-icon"></i
-      ></a>
+      <p class="copyright">Copyright © 2021 michalosman</p>
+      <a href="https://github.com/michalosman" class="github-link">
+        <i class="github-icon fab fa-github"></i>
+      </a>
     </footer>
   </body>
 </html>
