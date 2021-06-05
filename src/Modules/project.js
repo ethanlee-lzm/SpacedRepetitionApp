@@ -1,4 +1,4 @@
-import { toDate, isToday, isThisWeek, subDays } from "date-fns";
+import { toDate, isToday, isThisWeek, subDays } from 'date-fns';
 
 export default class Project {
   constructor(name) {
@@ -14,12 +14,12 @@ export default class Project {
     return this.name;
   }
 
-  getTasks() {
-    return this.tasks;
-  }
-
   setTasks(tasks) {
     this.tasks = tasks;
+  }
+
+  getTasks() {
+    return this.tasks;
   }
 
   getTask(taskName) {
