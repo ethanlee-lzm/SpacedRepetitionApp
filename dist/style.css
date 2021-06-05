@@ -34,7 +34,7 @@
   
   button {
     display: block;
-    color: var(--primary-dark);
+    color: inherit;
     font-family: inherit;
     font-size: inherit;
     border: none;
@@ -77,4 +77,87 @@
   
   .user-name {
     margin-right: 2rem;
+  }
+  
+  .button-sign-out {
+    background-color: rgba(173, 85, 85, 1);
+  }
+  
+  .button-sign-out:hover {
+    background-color: rgba(173, 85, 85, 0.9);
+  }
+  
+  /* Main */
+  
+  .main {
+    display: flex;
+  }
+  
+  .nav {
+    padding: 1rem;
+    flex: 1;
+    height: 100%;
+    background-color: var(--secondary-light);
+  }
+  
+  .nav {
+    width: 100%;
+  }
+  
+  .button-nav {
+    width: 100%;
+    background-color: var(--secondary-light);
+    text-align: left;
+  }
+  
+  .button-nav:hover {
+    background-color: #ccc;
+  }
+  
+  .default-project {
+    padding: 1rem;
+  }
+  
+  .user-projects h1 {
+    padding: 1rem;
+  }
+  
+  .project-preview {
+    flex: 3;
+    margin-top: 2rem;
+    margin-left: 5rem;
+  }
+  
+  .project-preview h1 {
+    padding: 0 1rem;
+  }
+  
+  .task {
+    display: flex;
+    align-items: center;
+    padding: 1rem;
+  }
+  
+  .fa-circle,
+  .fa-check-circle {
+    margin-right: 1rem;
+    font-size: 2.4rem;
+  }
+  
+  /* Footer */
+  
+  .footer {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    background-color: var(--primary-dark);
+  }
+  
+  .fa-github {
+    margin-left: 1rem;
+    color: black;
   }
