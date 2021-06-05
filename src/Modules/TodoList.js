@@ -1,4 +1,5 @@
 import Project from "./Project";
+import Task from "./Task";
 
 export default class TodoList {
   constructor() {
@@ -6,6 +7,14 @@ export default class TodoList {
     this.projects.push(new Project("Inbox"));
     this.projects.push(new Project("Today"));
     this.projects.push(new Project("This week"));
+  }
+
+  getProjects() {
+    return this.projects;
+  }
+
+  getProject(projectName) {
+    return this.projects.find((project) => project.name === projectName);
   }
 
   addProject(project) {
@@ -20,21 +29,21 @@ export default class TodoList {
     this.projects.splice(this.projects.indexOf(project), 1);
   }
 
-  getProject(projectName) {
-    return Object.assign(
-      new Project(),
-      this.projects.find((project) => project.name === projectName)
-    );
-  }
-
-  getProjects() {
-    return this.projects;
-  }
-
   contains(projectName) {
     return this.projects.some((project) => project.name === projectName);
   }
 
-  //getTasksToday
-  //getTasksThisWeek
+  updateTodayProject() {
+    this.getProject("Today").tasks = [];
+    this.projects.forEach((project) => {
+      if (project.name === "Today" || project.name === "This week") return;
+
+      const todayTasks = project.getTasksToday();
+      todayTasks.forEach((task) => {
+        const taskName = task.name + ` (${project.name})`;
+        if (this.getProject("Today").contains(taskName)) return;
+        this.getProject("Today").addTask(new Task(taskName, task.dueDate));
+      });
+    });
+  }
 }

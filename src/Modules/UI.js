@@ -7,7 +7,8 @@ export default class UI {
 
   static loadHomepage() {
     UI.loadProjects();
-    UI.loadProjectContent("Inbox");
+    UI.initProjectButtons();
+    UI.openProject("Inbox", document.getElementById("button-inbox-projects"));
   }
 
   static loadProjects() {
@@ -201,12 +202,13 @@ export default class UI {
   }
 
   static openTodayTasks() {
-    //sort today
+    Storage.updateTodayProject();
     UI.openProject("Today", this);
   }
 
   static openWeekTasks() {
-    //sort this week
+    //remove add task
+    //sort this week in project class
     UI.openProject("This week", this);
   }
 
