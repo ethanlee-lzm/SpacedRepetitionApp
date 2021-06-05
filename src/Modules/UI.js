@@ -33,14 +33,19 @@ export default class UI {
       .getTasks()
       .forEach((task) => UI.createTask(task.name, task.dueDate));
 
-    UI.initAddTaskButtons();
+    if (projectName !== "Today" && projectName !== "This week") {
+      UI.initAddTaskButtons();
+    }
   }
 
   static loadProjectContent(projectName) {
     const projectPreview = document.getElementById("project-preview");
     projectPreview.innerHTML = `
-      <h1 id="project-name">${projectName}</h1>
-        <div class="tasks-list" id="tasks-list"></div>
+        <h1 id="project-name">${projectName}</h1>
+        <div class="tasks-list" id="tasks-list"></div>`;
+
+    if (projectName !== "Today" && projectName !== "This week") {
+      projectPreview.innerHTML += `
         <button class="button-add-task" id="button-add-task">
           <i class="fas fa-plus"></i>
           Add Task
@@ -63,6 +68,7 @@ export default class UI {
             </button>
           </div>
         </div>`;
+    }
 
     UI.loadTasks(projectName);
   }
@@ -336,6 +342,10 @@ export default class UI {
     const projectName = document.getElementById("project-name").textContent;
     const taskName = taskButton.children[0].children[1].textContent;
 
+    if (projectName === "Today" || projectName === "This week") {
+      const mainProjectName = taskName.split("(")[1].split(")")[0];
+      Storage.deleteTask(mainProjectName, taskName);
+    }
     Storage.deleteTask(projectName, taskName);
     UI.clearTasks();
     UI.loadTasks(projectName);
@@ -345,6 +355,10 @@ export default class UI {
     const projectName = document.getElementById("project-name").textContent;
     const taskName = taskButton.children[0].children[1].textContent;
 
+    if (projectName === "Today" || projectName === "This week") {
+      const mainProjectName = taskName.split("(")[1].split(")")[0];
+      Storage.deleteTask(mainProjectName, taskName);
+    }
     Storage.deleteTask(projectName, taskName);
     UI.clearTasks();
     UI.loadTasks(projectName);
@@ -383,7 +397,18 @@ export default class UI {
       return;
     }
 
-    Storage.renameTask(projectName, taskName, newTaskName);
+    if (projectName === "Today" || projectName === "This week") {
+      const mainProjectName = taskName.split("(")[1].split(")")[0];
+      const mainTaskName = taskName.split(" ")[0];
+      Storage.renameTask(
+        projectName,
+        taskName,
+        newTaskName + ` (${mainProjectName})`
+      );
+      Storage.renameTask(mainProjectName, mainTaskName, newTaskName);
+    } else {
+      Storage.renameTask(projectName, taskName, newTaskName);
+    }
     UI.clearTasks();
     UI.loadTasks(projectName);
     UI.closeRenameInput(this.parentNode.parentNode);
@@ -411,7 +436,14 @@ export default class UI {
     const taskName = taskButton.children[0].children[1].textContent;
     const newDueDate = this.value;
 
-    Storage.setTaskDate(projectName, taskName, newDueDate);
+    if (projectName === "Today" || projectName === "This week") {
+      const mainProjectName = taskName.split("(")[1].split(")")[0];
+      const mainTaskName = taskName.split(" ")[0];
+      Storage.setTaskDate(projectName, taskName, newDueDate);
+      Storage.setTaskDate(mainProjectName, mainTaskName, newDueDate);
+    } else {
+      Storage.setTaskDate(projectName, taskName, newDueDate);
+    }
     UI.clearTasks();
     UI.loadTasks(projectName);
     UI.closeSetDateInput(taskButton);
