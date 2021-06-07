@@ -3,6 +3,8 @@
     --secondary-dark: #444;
     --primary-light: #eee;
     --secondary-light: #ddd;
+
+    --alt-dark: #172531;
   }
   
   *,
@@ -65,7 +67,7 @@
     align-items: center;
     justify-content: space-between;
     padding: 2rem;
-    background-color: var(--primary-dark);
+    background-color: var(--alt-dark);
     color: var(--primary-light);
   }
   
@@ -78,13 +80,17 @@
   .fa-check-double {
     font-size: 4rem;
   }
+
+  .fa-paper-plane {
+    font-size: 4rem;
+  }
   
   .page-name {
     font-family: "Yusei Magic", sans-serif;
     font-size: 4rem;
   }
   
-  .button-open-nav {
+  .button-open-nav { 
     display: none;
     background-color: var(--primary-dark);
     font-size: 4rem;
@@ -121,6 +127,15 @@
   
   .fa-inbox {
     margin-right: 0.6rem;
+    color: #294257
+  }
+
+  .fa-calendar-day {
+    color: #456f93;
+  }
+
+  .fa-calendar-week {
+    color: #9bb7d0;
   }
   
   .user-projects {
